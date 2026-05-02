@@ -1,0 +1,274 @@
+[
+  {
+    "id": "t1",
+    "category": "top",
+    "type": "hoodie",
+    "name": "Hoodie",
+    "color": "black",
+    "warmth": "cold",
+    "image": "../../assets/images/shuffle_hoodie.png"
+  },
+  {
+    "id": "t2",
+    "category": "top",
+    "type": "t-shirt",
+    "name": "T-Shirt",
+    "color": "white",
+    "warmth": "warm",
+    "image": "../../assets/images/shuffle_tshirt.png"
+  },
+  {
+    "id": "t3",
+    "category": "top",
+    "type": "raincoat",
+    "name": "Raincoat",
+    "color": "yellow",
+    "warmth": "rainy",
+    "image": "../../assets/images/shuffle_raincoat.png"
+  },
+  {
+    "id": "t4",
+    "category": "top",
+    "type": "sweater",
+    "name": "Sweater",
+    "color": "blue",
+    "warmth": "cold",
+    "image": "../../assets/images/shuffle_sweater.png"
+  },
+  {
+    "id": "t5",
+    "category": "top",
+    "type": "tank-top",
+    "name": "Tank Top",
+    "color": "red",
+    "warmth": "warm",
+    "image": "../../assets/images/shuffle_tanktop.png"
+  },
+  {
+    "id": "t6",
+    "category": "top",
+    "type": "denim-jacket",
+    "name": "Denim Jacket",
+    "color": "blue",
+    "warmth": "cold",
+    "image": "../../assets/images/shuffle_denim_jacket.png"
+  },
+  {
+    "id": "t7",
+    "category": "top",
+    "type": "polo-shirt",
+    "name": "Polo Shirt",
+    "color": "green",
+    "warmth": "warm",
+    "image": "../../assets/images/shuffle_polo.png"
+  },
+  {
+    "id": "t8",
+    "category": "top",
+    "type": "long-sleeve",
+    "name": "Long Sleeve",
+    "color": "gray",
+    "warmth": "cold",
+    "image": "../../assets/images/shuffle_longsleeve.png"
+  },
+  {
+    "id": "t9",
+    "category": "top",
+    "type": "windbreaker",
+    "name": "Windbreaker",
+    "color": "orange",
+    "warmth": "rainy",
+    "image": "../../assets/images/shuffle_windbreaker.png"
+  },
+  {
+    "id": "t10",
+    "category": "top",
+    "type": "puffer-coat",
+    "name": "Puffer Coat",
+    "color": "white",
+    "warmth": "cold",
+    "image": "../../assets/images/shuffle_puffer.png"
+  },
+
+  {
+    "id": "b1",
+    "category": "bottom",
+    "type": "cargo-pants",
+    "name": "Cargo Pants",
+    "color": "brown",
+    "warmth": "cold",
+    "image": "../../assets/images/shuffle_cargo_pants.png"
+  },
+  {
+    "id": "b2",
+    "category": "bottom",
+    "type": "shorts",
+    "name": "Shorts",
+    "color": "blue",
+    "warmth": "warm",
+    "image": "../../assets/images/shuffle_shorts.png"
+  },
+  {
+    "id": "b3",
+    "category": "bottom",
+    "type": "jeans",
+    "name": "Jeans",
+    "color": "blue",
+    "warmth": "cold",
+    "image": "../../assets/images/shuffle_jeans.png"
+  },
+  {
+    "id": "b4",
+    "category": "bottom",
+    "type": "chinos",
+    "name": "Chinos",
+    "color": "beige",
+    "warmth": "warm",
+    "image": "../../assets/images/shuffle_chinos.png"
+  },
+  {
+    "id": "b5",
+    "category": "bottom",
+    "type": "sweatpants",
+    "name": "Sweatpants",
+    "color": "black",
+    "warmth": "cold",
+    "image": "../../assets/images/shuffle_sweatpants.png"
+  },
+  {
+    "id": "b6",
+    "category": "bottom",
+    "type": "basketball-shorts",
+    "name": "Basketball shorts",
+    "color": "red",
+    "warmth": "warm",
+    "image": "../../assets/images/shuffle_basketball_shorts.png"
+  },
+  {
+    "id": "b7",
+    "category": "bottom",
+    "type": "thermal-pants",
+    "name": "Thermal Pants",
+    "color": "black",
+    "warmth": "cold",
+    "image": "../../assets/images/shuffle_thermal_pants.png"
+  },
+  {
+    "id": "b8",
+    "category": "bottom",
+    "type": "corduroy-pants",
+    "name": "Corduroy Pants",
+    "color": "brown",
+    "warmth": "cold",
+    "image": "../../assets/images/shuffle_corduroy.png"
+  },
+  {
+    "id": "b9",
+    "category": "bottom",
+    "type": "linen-pants",
+    "name": "Linen Pants",
+    "color": "white",
+    "warmth": "warm",
+    "image": "../../assets/images/shuffle_linen_pants.png"
+  },
+  {
+    "id": "b10",
+    "category": "bottom",
+    "type": "waterproof-trousers",
+    "name": "Waterproof Trousers",
+    "color": "blue",
+    "warmth": "rainy",
+    "image": "../../assets/images/shuffle_rain_pants.png"
+  },
+
+  {
+    "id": "s1",
+    "category": "shoes",
+    "type": "boots",
+    "name": "Boots",
+    "color": "black",
+    "warmth": "cold",
+    "image": "../../assets/images/shuffle_boots.png"
+  },
+  {
+    "id": "s2",
+    "category": "shoes",
+    "type": "sneakers",
+    "name": "Sneakers",
+    "color": "white",
+    "warmth": "warm",
+    "image": "../../assets/images/shuffle_sneakers.png"
+  },
+  {
+    "id": "s3",
+    "category": "shoes",
+    "type": "sandals",
+    "name": "Sandals",
+    "color": "brown",
+    "warmth": "warm",
+    "image": "../../assets/images/shuffle_sandals.png"
+  },
+  {
+    "id": "s4",
+    "category": "shoes",
+    "type": "rain-boots",
+    "name": "Rain Boots",
+    "color": "blue",
+    "warmth": "rainy",
+    "image": "../../assets/images/shuffle_rain_boots.png"
+  },
+  {
+    "id": "s5",
+    "category": "shoes",
+    "type": "loafers",
+    "name": "Loafers",
+    "color": "beige",
+    "warmth": "warm",
+    "image": "../../assets/images/shuffle_loafers.png"
+  },
+  {
+    "id": "s6",
+    "category": "shoes",
+    "type": "running-shoes",
+    "name": "Running Shoes",
+    "color": "black",
+    "warmth": "warm",
+    "image": "../../assets/images/shuffle_running_shoes.png"
+  },
+  {
+    "id": "s7",
+    "category": "shoes",
+    "type": "hiking-boots",
+    "name": "Hiking Boots",
+    "color": "brown",
+    "warmth": "cold",
+    "image": "../../assets/images/shuffle_hiking_boots.png"
+  },
+  {
+    "id": "s8",
+    "category": "shoes",
+    "type": "flip-flops",
+    "name": "Flip Flops",
+    "color": "yellow",
+    "warmth": "warm",
+    "image": "../../assets/images/shuffle_flipflops.png"
+  },
+  {
+    "id": "s9",
+    "category": "shoes",
+    "type": "dress-shoes",
+    "name": "Dress Shoes",
+    "color": "black",
+    "warmth": "warm",
+    "image": "../../assets/images/shuffle_dress_shoes.png"
+  },
+  {
+    "id": "s10",
+    "category": "shoes",
+    "type": "winter-boots",
+    "name": "Winter Boots",
+    "color": "white",
+    "warmth": "cold",
+    "image": "../../assets/images/shuffle_winter_boots.png"
+  }
+]
