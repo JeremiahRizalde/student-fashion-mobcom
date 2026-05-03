@@ -1,20 +1,15 @@
+import { Camera } from "lucide-react-native";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
-    Bell,
-    Camera,
-    Menu as MenuIcon,
-    Search,
-    Share2,
-} from "lucide-react-native";
-import React, { useEffect, useRef } from "react";
-import {
-    Alert,
-    Animated,
-    Image,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  Alert,
+  Animated,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
 
 const SFAIcon = require("../../assets/images/SFA-icon.png");
@@ -23,7 +18,7 @@ import { resolveClothingImage } from "../src/utils/ImageResolver";
 
 import { styles } from "../../styles/GlobalStyles";
 export const VirtualCloset = ({
-  items,
+  items = [],
   onSelectItem,
   onAdd,
   featuredOutfit,
@@ -32,6 +27,58 @@ export const VirtualCloset = ({
 }: any) => {
   const shakeAnim = useRef<any>({});
   const reveal = useRef(new Animated.Value(0)).current;
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedColor, setSelectedColor] = useState("All");
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [selectedWarmth, setSelectedWarmth] = useState("All");
+
+  const colorOptions = useMemo(() => {
+    const colorMap = new Map<string, string>();
+    items.forEach((item: any) => {
+      const raw = typeof item.color === "string" ? item.color.trim() : "";
+      if (!raw) return;
+      const key = raw.toLowerCase();
+      if (!colorMap.has(key)) colorMap.set(key, raw);
+    });
+
+    return ["All", ...Array.from(colorMap.values()).sort()];
+  }, [items]);
+
+  useEffect(() => {
+    if (selectedColor !== "All" && !colorOptions.includes(selectedColor)) {
+      setSelectedColor("All");
+    }
+  }, [colorOptions, selectedColor]);
+
+  const normalizedQuery = searchQuery.trim().toLowerCase();
+  const filteredItems = items.filter((item: any) => {
+    const nameMatch = normalizedQuery
+      ? String(item.name || "")
+          .toLowerCase()
+          .includes(normalizedQuery)
+      : true;
+    const colorMatch =
+      selectedColor === "All"
+        ? true
+        : String(item.color || "").toLowerCase() ===
+          selectedColor.toLowerCase();
+    const categoryMatch =
+      selectedCategory === "All"
+        ? true
+        : String(item.category || "") === selectedCategory;
+    const warmthMatch =
+      selectedWarmth === "All"
+        ? true
+        : String(item.warmth || "") === selectedWarmth;
+
+    return nameMatch && colorMatch && categoryMatch && warmthMatch;
+  });
+
+  const hasActiveFilters =
+    normalizedQuery.length > 0 ||
+    selectedColor !== "All" ||
+    selectedCategory !== "All" ||
+    selectedWarmth !== "All";
 
   useEffect(() => {
     Animated.timing(reveal, {
@@ -117,27 +164,6 @@ export const VirtualCloset = ({
           ],
         }}
       >
-        <View style={styles.topIcons}>
-          <MenuIcon size={22} color="#0F766E" />
-          <View style={styles.row}>
-            <Bell
-              size={18}
-              color="#0F766E"
-              style={virtualClosetStyles.topIcon}
-            />
-            <Share2
-              size={18}
-              color="#0F766E"
-              style={virtualClosetStyles.topIcon}
-            />
-            <Search
-              size={18}
-              color="#0F766E"
-              style={virtualClosetStyles.topIcon}
-            />
-          </View>
-        </View>
-
         <ScrollView contentContainerStyle={virtualClosetStyles.content}>
           <Text style={styles.wardrobeLabel}>YOUR STYLE ARCHIVE</Text>
           <View style={styles.rowBetween}>
@@ -147,6 +173,129 @@ export const VirtualCloset = ({
               <Camera size={18} color="white" />
             </TouchableOpacity>
           </View>
+
+          <View style={virtualClosetStyles.searchCard}>
+            <TextInput
+              style={virtualClosetStyles.searchInput}
+              placeholder="Search by name"
+              value={searchQuery}
+              onChangeText={setSearchQuery}
+              placeholderTextColor="#94A3B8"
+            />
+            {searchQuery.trim().length > 0 && (
+              <TouchableOpacity
+                style={virtualClosetStyles.clearButton}
+                onPress={() => setSearchQuery("")}
+              >
+                <Text style={virtualClosetStyles.clearButtonText}>Clear</Text>
+              </TouchableOpacity>
+            )}
+          </View>
+
+          <View style={virtualClosetStyles.filterSection}>
+            <Text style={virtualClosetStyles.filterLabel}>Color</Text>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+              <View style={virtualClosetStyles.filterRow}>
+                {colorOptions.map((option) => (
+                  <TouchableOpacity
+                    key={`color-${option}`}
+                    style={[
+                      virtualClosetStyles.filterChip,
+                      selectedColor === option &&
+                        virtualClosetStyles.filterChipActive,
+                    ]}
+                    onPress={() => setSelectedColor(option)}
+                  >
+                    <Text
+                      style={[
+                        virtualClosetStyles.filterChipText,
+                        selectedColor === option &&
+                          virtualClosetStyles.filterChipTextActive,
+                      ]}
+                    >
+                      {option}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            </ScrollView>
+          </View>
+
+          <View style={virtualClosetStyles.filterSection}>
+            <Text style={virtualClosetStyles.filterLabel}>Category</Text>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+              <View style={virtualClosetStyles.filterRow}>
+                {["All", "top", "bottom", "shoes"].map((option) => (
+                  <TouchableOpacity
+                    key={`category-${option}`}
+                    style={[
+                      virtualClosetStyles.filterChip,
+                      selectedCategory === option &&
+                        virtualClosetStyles.filterChipActive,
+                    ]}
+                    onPress={() => setSelectedCategory(option)}
+                  >
+                    <Text
+                      style={[
+                        virtualClosetStyles.filterChipText,
+                        selectedCategory === option &&
+                          virtualClosetStyles.filterChipTextActive,
+                      ]}
+                    >
+                      {option}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            </ScrollView>
+          </View>
+
+          <View style={virtualClosetStyles.filterSection}>
+            <Text style={virtualClosetStyles.filterLabel}>Warmth</Text>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+              <View style={virtualClosetStyles.filterRow}>
+                {["All", "light", "medium", "warm", "cold", "rainy"].map(
+                  (option) => (
+                    <TouchableOpacity
+                      key={`warmth-${option}`}
+                      style={[
+                        virtualClosetStyles.filterChip,
+                        selectedWarmth === option &&
+                          virtualClosetStyles.filterChipActive,
+                      ]}
+                      onPress={() => setSelectedWarmth(option)}
+                    >
+                      <Text
+                        style={[
+                          virtualClosetStyles.filterChipText,
+                          selectedWarmth === option &&
+                            virtualClosetStyles.filterChipTextActive,
+                        ]}
+                      >
+                        {option}
+                      </Text>
+                    </TouchableOpacity>
+                  ),
+                )}
+              </View>
+            </ScrollView>
+          </View>
+
+          {hasActiveFilters && (
+            <TouchableOpacity
+              style={virtualClosetStyles.clearFilters}
+              onPress={() => {
+                setSearchQuery("");
+                setSelectedColor("All");
+                setSelectedCategory("All");
+                setSelectedWarmth("All");
+              }}
+            >
+              <Text style={virtualClosetStyles.clearFiltersText}>
+                Clear filters
+              </Text>
+            </TouchableOpacity>
+          )}
 
           {items.length === 0 ? (
             <View style={virtualClosetStyles.emptyCard}>
@@ -166,9 +315,31 @@ export const VirtualCloset = ({
                 </Text>
               </TouchableOpacity>
             </View>
+          ) : filteredItems.length === 0 ? (
+            <View style={virtualClosetStyles.emptyCard}>
+              <Text style={virtualClosetStyles.emptyTitle}>
+                No matching clothes
+              </Text>
+              <Text style={virtualClosetStyles.emptyText}>
+                Try a different search or clear your filters.
+              </Text>
+              <TouchableOpacity
+                style={virtualClosetStyles.emptyButton}
+                onPress={() => {
+                  setSearchQuery("");
+                  setSelectedColor("All");
+                  setSelectedCategory("All");
+                  setSelectedWarmth("All");
+                }}
+              >
+                <Text style={virtualClosetStyles.emptyButtonText}>
+                  Clear Filters
+                </Text>
+              </TouchableOpacity>
+            </View>
           ) : (
             <View style={styles.grid}>
-              {items.map((item: any) => {
+              {filteredItems.map((item: any) => {
                 const id = String(item.id);
                 if (!shakeAnim.current[id])
                   shakeAnim.current[id] = new Animated.Value(0);
@@ -202,36 +373,6 @@ export const VirtualCloset = ({
               })}
             </View>
           )}
-
-          <Text style={styles.trendingSectionTitle}>Trending For You</Text>
-
-          <TouchableOpacity
-            style={styles.fashionWeekSection}
-            onPress={onNavigateToOutfits}
-          >
-            <Image
-              source={resolveClothingImage(
-                featuredOutfit?.image || "../../assets/images/FashionWeek.png",
-              )}
-              style={styles.fashionWeekImage}
-              resizeMode="cover"
-            />
-            <View style={styles.fashionWeekContent}>
-              <View style={virtualClosetStyles.trendingBadge}>
-                <Text style={virtualClosetStyles.trendingBadgeText}>
-                  Style Focus
-                </Text>
-              </View>
-              <Text style={styles.articleTitle}>
-                {featuredOutfit?.title || "Loading Trends..."}
-              </Text>
-              <Text style={styles.articleDescription}>
-                {featuredOutfit?.desc ||
-                  "Discover fresh combinations curated from your wardrobe."}
-              </Text>
-              <Text style={styles.authorText}>Based on your closet</Text>
-            </View>
-          </TouchableOpacity>
         </ScrollView>
       </Animated.View>
     </View>
@@ -242,6 +383,85 @@ const virtualClosetStyles = StyleSheet.create({
   content: {
     paddingHorizontal: 20,
     paddingBottom: 90,
+  },
+  searchCard: {
+    marginTop: 16,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: "#D9E2EC",
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  searchInput: {
+    flex: 1,
+    paddingVertical: 8,
+    color: "#102A43",
+    fontWeight: "600",
+  },
+  clearButton: {
+    backgroundColor: "#E2E8F0",
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 999,
+    marginLeft: 8,
+  },
+  clearButtonText: {
+    color: "#334155",
+    fontSize: 12,
+    fontWeight: "700",
+  },
+  filterSection: {
+    marginTop: 14,
+  },
+  filterLabel: {
+    fontSize: 12,
+    color: "#64748B",
+    fontWeight: "700",
+    textTransform: "uppercase",
+    letterSpacing: 1,
+    marginBottom: 8,
+  },
+  filterRow: {
+    flexDirection: "row",
+    paddingRight: 8,
+  },
+  filterChip: {
+    backgroundColor: "#E2E8F0",
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 999,
+    marginRight: 8,
+  },
+  filterChipActive: {
+    backgroundColor: "#0F766E",
+  },
+  filterChipText: {
+    color: "#334155",
+    fontSize: 12,
+    fontWeight: "700",
+    textTransform: "capitalize",
+  },
+  filterChipTextActive: {
+    color: "#F8FAFC",
+  },
+  clearFilters: {
+    marginTop: 12,
+    alignSelf: "flex-start",
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: "#0F766E",
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+  },
+  clearFiltersText: {
+    color: "#0F766E",
+    fontWeight: "800",
+    letterSpacing: 0.3,
+    textTransform: "uppercase",
+    fontSize: 12,
   },
   topIcon: {
     marginHorizontal: 8,

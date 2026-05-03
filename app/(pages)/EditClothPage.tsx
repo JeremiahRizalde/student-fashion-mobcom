@@ -20,6 +20,7 @@ export const EditClothingPage = ({
   initialData,
   onSave,
   onCancel,
+  onDelete,
 }: any) => {
   // 1. Setup States for all data types
   const [name, setName] = useState(initialData?.name || "");
@@ -33,6 +34,18 @@ export const EditClothingPage = ({
 
   const categories = ["top", "bottom", "shoes"];
   const warmthLevels = ["light", "medium", "warm", "cold", "rainy"];
+
+  const handleDelete = () => {
+    if (!initialData?.id) return;
+    Alert.alert("Delete Item", "Remove this clothing item from your closet?", [
+      { text: "Cancel", style: "cancel" },
+      {
+        text: "Delete",
+        style: "destructive",
+        onPress: () => onDelete?.(initialData.id),
+      },
+    ]);
+  };
 
   // 2. Function to swap the photo (Camera or Gallery)
   const handleChangePhoto = async () => {
@@ -199,6 +212,19 @@ export const EditClothingPage = ({
         >
           <Text style={styles.buttonText}>Save to Closet</Text>
         </TouchableOpacity>
+        {initialData?.id && (
+          <TouchableOpacity
+            style={[
+              styles.primaryButton,
+              { backgroundColor: "#FEE2E2", marginTop: 12 },
+            ]}
+            onPress={handleDelete}
+          >
+            <Text style={[styles.buttonText, { color: "#EF4444" }]}>
+              Remove from Closet
+            </Text>
+          </TouchableOpacity>
+        )}
         <TouchableOpacity
           onPress={onCancel}
           style={{ marginTop: 15, paddingBottom: 40, alignItems: "center" }}

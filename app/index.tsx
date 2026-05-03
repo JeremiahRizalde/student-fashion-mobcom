@@ -298,12 +298,22 @@ export default function App() {
       const updated = await DatabaseService.fetchItems();
       setWardrobe(updated);
       navigateWithSlide("closet");
+      return true;
     } catch (error) {
       Alert.alert(
         "Delete Failed",
         "Unable to delete this clothing item from MongoDB.",
       );
       console.error("Delete item failed:", error);
+      return false;
+    }
+  };
+
+  const handleDeleteFromEdit = async (id: string) => {
+    const success = await handleDeleteItem(id);
+    if (success) {
+      setIsEditing(false);
+      setActiveItem(null);
     }
   };
 
@@ -352,6 +362,7 @@ export default function App() {
         // Pass existing data as initial values to your Edit page
         initialData={activeItem}
         onSave={handleUpdateSave}
+        onDelete={handleDeleteFromEdit}
         onCancel={() => setIsEditing(false)}
       />
     );

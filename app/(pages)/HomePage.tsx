@@ -76,6 +76,11 @@ export const HomePage: React.FC<HomePageProps> = ({
     bottom: null,
     shoes: null,
   });
+  const [lockedSlots, setLockedSlots] = useState({
+    top: false,
+    bottom: false,
+    shoes: false,
+  });
 
   useEffect(() => {
     Animated.timing(screenEnter, {
@@ -200,11 +205,27 @@ export const HomePage: React.FC<HomePageProps> = ({
       };
 
       setOutfitWithAnimation({
-        top: getRandomDifferent(tops, selectedOutfit.top),
-        bottom: getRandomDifferent(bottoms, selectedOutfit.bottom),
-        shoes: getRandomDifferent(shoes, selectedOutfit.shoes),
+        top:
+          lockedSlots.top && selectedOutfit.top
+            ? selectedOutfit.top
+            : getRandomDifferent(tops, selectedOutfit.top),
+        bottom:
+          lockedSlots.bottom && selectedOutfit.bottom
+            ? selectedOutfit.bottom
+            : getRandomDifferent(bottoms, selectedOutfit.bottom),
+        shoes:
+          lockedSlots.shoes && selectedOutfit.shoes
+            ? selectedOutfit.shoes
+            : getRandomDifferent(shoes, selectedOutfit.shoes),
       });
     }
+  };
+
+  const toggleLock = (slot: keyof SelectedOutfit) => {
+    setLockedSlots((prev) => ({
+      ...prev,
+      [slot]: !prev[slot],
+    }));
   };
 
   const getOutfitSuggestion = (weatherCode: number, temperature: number) => {
@@ -318,9 +339,19 @@ export const HomePage: React.FC<HomePageProps> = ({
                 >
                   {selectedOutfit.top && (
                     <TouchableOpacity
-                      style={[styles.outfitItem, homeStyles.outfitItemCard]}
+                      style={[
+                        styles.outfitItem,
+                        homeStyles.outfitItemCard,
+                        lockedSlots.top && homeStyles.lockedItemCard,
+                      ]}
                       onPress={() => onSelectItem?.(selectedOutfit.top!)}
+                      onLongPress={() => toggleLock("top")}
                     >
+                      {lockedSlots.top && (
+                        <View style={homeStyles.lockBadge}>
+                          <Text style={homeStyles.lockBadgeText}>Locked</Text>
+                        </View>
+                      )}
                       <Image
                         source={resolveClothingImage(selectedOutfit.top.image)}
                         style={styles.outfitItemImage}
@@ -332,9 +363,19 @@ export const HomePage: React.FC<HomePageProps> = ({
 
                   {selectedOutfit.bottom && (
                     <TouchableOpacity
-                      style={[styles.outfitItem, homeStyles.outfitItemCard]}
+                      style={[
+                        styles.outfitItem,
+                        homeStyles.outfitItemCard,
+                        lockedSlots.bottom && homeStyles.lockedItemCard,
+                      ]}
                       onPress={() => onSelectItem?.(selectedOutfit.bottom!)}
+                      onLongPress={() => toggleLock("bottom")}
                     >
+                      {lockedSlots.bottom && (
+                        <View style={homeStyles.lockBadge}>
+                          <Text style={homeStyles.lockBadgeText}>Locked</Text>
+                        </View>
+                      )}
                       <Image
                         source={resolveClothingImage(
                           selectedOutfit.bottom.image,
@@ -348,9 +389,19 @@ export const HomePage: React.FC<HomePageProps> = ({
 
                   {selectedOutfit.shoes && (
                     <TouchableOpacity
-                      style={[styles.outfitItem, homeStyles.outfitItemCard]}
+                      style={[
+                        styles.outfitItem,
+                        homeStyles.outfitItemCard,
+                        lockedSlots.shoes && homeStyles.lockedItemCard,
+                      ]}
                       onPress={() => onSelectItem?.(selectedOutfit.shoes!)}
+                      onLongPress={() => toggleLock("shoes")}
                     >
+                      {lockedSlots.shoes && (
+                        <View style={homeStyles.lockBadge}>
+                          <Text style={homeStyles.lockBadgeText}>Locked</Text>
+                        </View>
+                      )}
                       <Image
                         source={resolveClothingImage(
                           selectedOutfit.shoes.image,
@@ -418,5 +469,30 @@ const homeStyles = StyleSheet.create({
   outfitItemCard: {
     borderWidth: 1,
     borderColor: "#D9E2EC",
+  },
+  lockedItemCard: {
+    borderColor: "#0F766E",
+    shadowColor: "#0F766E",
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 4,
+  },
+  lockBadge: {
+    position: "absolute",
+    top: 8,
+    left: 8,
+    backgroundColor: "rgba(15, 118, 110, 0.9)",
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 999,
+    zIndex: 2,
+  },
+  lockBadgeText: {
+    color: "#F8FAFC",
+    fontSize: 10,
+    fontWeight: "800",
+    letterSpacing: 0.4,
+    textTransform: "uppercase",
   },
 });
